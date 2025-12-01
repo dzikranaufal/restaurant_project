@@ -9,5 +9,5 @@ int main(){
     }
 
     printf("selesai");
-    
+    printf("belum selesai");
 }

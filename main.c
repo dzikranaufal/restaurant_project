@@ -8,12 +8,12 @@ typedef struct{
     char kategori[50];
 } Menu;
 Menu daftarMenu[50] = {
-    {001, "Ayam Geprek sambal bawang", 15000, "Makanan"},
-    {002, "Nasi Goreng Spesial", 20000, "Makanan"},
-    {003, "Milkshake", 20000, "Minuman"},
-    {004, "Sambal Cumi", 15000, "Makanan"},
-    {005, "Cheescake Bluberry", 25000, "Dessert"},
-    {006, "Orange Juice", 10000, "Minuman"}
+    {1, "Ayam Geprek sambal bawang", 15000, "Makanan"},
+    {2, "Nasi Goreng Spesial", 20000, "Makanan"},
+    {3, "Milkshake", 20000, "Minuman"},
+    {4, "Sambal Cumi", 15000, "Makanan"},
+    {5, "Cheescake Bluberry", 25000, "Dessert"},
+    {6, "Orange Juice", 10000, "Minuman"}
 };
 int jumlah = 6;
 
@@ -21,11 +21,7 @@ int jumlah = 6;
 void tampilData(){
     printf("\n===== Daftar Menu Restoran =====\n");
     for(int i = 0; i < jumlah; i++){
-        printf("[%d] %s - Rp%d (%s)\n", 
-            daftarMenu[i].kode, 
-            daftarMenu[i].nama, 
-            daftarMenu[i].harga, 
-            daftarMenu[i].kategori);
+        printf("[%d] %s - Rp%d (%s)\n",  daftarMenu[i].kode,  daftarMenu[i].nama,  daftarMenu[i].harga,  daftarMenu[i].kategori);
     }
     printf("==================================");
 }

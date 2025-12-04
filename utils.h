@@ -1,5 +1,11 @@
-#ifndef C78D3DD7_251B_4B7C_9305_FEEA51129E2D
-#define C78D3DD7_251B_4B7C_9305_FEEA51129E2D
+#ifndef UTILS_H
+#define UTILS_H
 
+int login();
+void inputPassword(char *pass);
+void adminMenu();
+void cashierMenu();
+void clearScreen();
+void pauseScreen();
 
-#endif /* C78D3DD7_251B_4B7C_9305_FEEA51129E2D */
+#endif

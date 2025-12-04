@@ -1,5 +1,17 @@
-#ifndef D023A9C2_AD0C_48CB_A587_7FE2A2CFD8C4
-#define D023A9C2_AD0C_48CB_A587_7FE2A2CFD8C4
+#ifndef MENU_H
+#define MENU_H
 
+typedef struct {
+    int kode;
+    char nama[100];
+    int harga;
+    char kategori[50];
+} Menu;
 
-#endif /* D023A9C2_AD0C_48CB_A587_7FE2A2CFD8C4 */
+extern Menu daftarMenu[50];
+extern int jumlah;
+
+void tampilData();
+void tambahData();
+
+#endif

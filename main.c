@@ -1,82 +1,24 @@
 #include <stdio.h>
-#include <string.h>
+#include "utils.h"
 
-typedef struct{
-    int kode;
-    char nama[100];
-    int harga;
-    char kategori[50];
-} Menu;
-Menu daftarMenu[50] = {
-    {1, "Ayam Geprek sambal bawang", 15000, "Makanan"},
-    {2, "Nasi Goreng Spesial", 20000, "Makanan"},
-    {3, "Milkshake", 20000, "Minuman"},
-    {4, "Sambal Cumi", 15000, "Makanan"},
-    {5, "Cheescake Bluberry", 25000, "Dessert"},
-    {6, "Orange Juice", 10000, "Minuman"}
-};
-int jumlah = 6;
+int main() {
+    while (1) {
+        clearScreen(); 
+        int role = login();
 
-
-void tampilData(){
-    printf("\n===== Daftar Menu Restoran =====\n");
-    for(int i = 0; i < jumlah; i++){
-        printf("[%d] %s - Rp%d (%s)\n",  daftarMenu[i].kode,  daftarMenu[i].nama,  daftarMenu[i].harga,  daftarMenu[i].kategori);
+        if (role == 1) {
+            clearScreen();
+            adminMenu();
+        }
+        else if (role == 2) {
+            clearScreen();
+            cashierMenu();
+        }
+        else {
+            printf("Username atau password salah!\n");
+            pauseScreen();
+        }
+        
     }
-    printf("==================================");
-}
-
-
-void tambahData(Menu daftarMenu[], int *jumlah){
-    printf("\n=== Tambah Menu ===\n");
-
-    printf("Masukkan Kode        : ");
-    scanf("%d", &daftarMenu[*jumlah].kode);
-
-    printf("Masukkan Nama       : ");
-    scanf(" %[^\n]s", daftarMenu[*jumlah].nama);
-
-    printf("Masukkan Harga      : ");
-    scanf("%d", &daftarMenu[*jumlah].harga);
-
-    printf("Masukkan Kategori   : ");
-    scanf(" %[^\n]s", daftarMenu[*jumlah].kategori);
-
-    (*jumlah)++;
-    printf("Menu berhasil ditambahkan!\n");
-}
-
-
-int main(){
-    int pilih;
-    int jumlah = 0;
-
-    do{
-    printf("\n=== MENU RESTORAN ===\n");
-    printf("1. Tambah Data\n");
-    printf("2. Tampil Data\n");
-    printf("3. Hapus Data\n");
-    printf("0. Keluar\n");
-    printf("Pilih menu: ");
-    scanf("%d", &pilih);
-    
-    switch (pilih){
-    case 1:tambahData(daftarMenu, &jumlah);
-        break;
-    case 2:tampilData();
-        break;
-    case 0:
-        printf("Program selesai.\n");
-        break;
-
-    default:
-        printf("Pilihan tidak valid!!\n");
-        break;
-    }
-
-    }while (pilih !=0);
-
     return 0;
 }
-
-

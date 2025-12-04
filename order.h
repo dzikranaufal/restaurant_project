@@ -1,5 +1,18 @@
-#ifndef F4DEB85A_6232_432F_ACAC_DFB3EED5F6D0
-#define F4DEB85A_6232_432F_ACAC_DFB3EED5F6D0
+#ifndef ORDER_H
+#define ORDER_H
 
+typedef struct {
+    int kodeMenu;
+    int jumlah;
+    int subtotal;
+} Order;
 
-#endif /* F4DEB85A_6232_432F_ACAC_DFB3EED5F6D0 */
+extern Order daftarOrder[50];
+extern int jumlahOrder;
+
+// fungsi
+void tambahOrder();
+void tampilOrder();
+int cariHargaMenu(int kodeMenu); // ambil harga dari menu.c (temenmu punya)
+
+#endif

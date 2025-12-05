@@ -13,5 +13,9 @@ extern int jumlah;
 
 void tampilData();
 void tambahData();
+void hapusData();
+void editData();
+void sortingMenu();
+void searchMenu();
 
 #endif

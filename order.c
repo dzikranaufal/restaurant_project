@@ -3,7 +3,6 @@
 #include "menu.h" 
 #include "utils.h" 
 
-
 Order daftarOrder[50];
 int jumlahOrder = 0;
 
@@ -20,6 +19,7 @@ int cariHargaMenu(int kodeMenu) {
 void tambahOrder() {
     clearScreen();
     int kode, qty;
+    tampilData();
     printf("\n=== Tambah Pesanan ===\n");
 
     printf("Masukkan kode menu: ");
@@ -55,15 +55,11 @@ void tampilOrder() {
     int total = 0;
 
     for (int i = 0; i < jumlahOrder; i++) {
-        printf("[%d] Kode Menu: %d | Jumlah: %d | Subtotal: Rp%d\n",
-            i + 1,
-            daftarOrder[i].kodeMenu,
-            daftarOrder[i].jumlah,
-            daftarOrder[i].subtotal
-        );
+        printf("[%d] Kode Menu: %d | Jumlah: %d | Subtotal: Rp%d\n", i + 1, daftarOrder[i].kodeMenu, daftarOrder[i].jumlah, daftarOrder[i].subtotal);
         total += daftarOrder[i].subtotal;
     }
 
     printf("----------------------------------\n");
     printf("Total Bayar: Rp%d\n", total);
+    pauseScreen();
 }

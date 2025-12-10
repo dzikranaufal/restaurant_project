@@ -44,7 +44,7 @@ void inputPassword(char *pass) {
 int login() {
     char user[50], pass[50];
 
-    printf("\n======= LOGIN SYSTEM =======\n");
+    printf("\n======= LOGIN =======\n");
     printf("Username: ");
     scanf("%s", user);
 

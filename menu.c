@@ -46,6 +46,7 @@ void tambahData() {
 
 void hapusData() {
     clearScreen();
+    
     int kode;
     printf("\n=== Hapus Menu ===\n");
     printf("Masukkan kode menu yang ingin dihapus: ");

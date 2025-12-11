@@ -14,13 +14,27 @@ Menu daftarMenu[50] = {
 
 int jumlah = 6;
 
+char* kategoriList(int pilih) {
+    switch(pilih) {
+        case 1: return "Makanan";
+        case 2: return "Minuman";
+        case 3: return "Dessert";
+        default: return "Lainnya";
+    }
+}
+
+
 void tampilData() {
     clearScreen();
-    printf("\n===== Daftar Menu Restoran =====\n");
+    printf("\n========================== DAFTAR MENU ===========================\n");
+    printf("| %-5s | %-30s | %-8s | %-10s |\n", "Kode", "Nama Menu", "Harga", "Kategori");
+    printf("------------------------------------------------------------------\n");
+    
     for(int i = 0; i < jumlah; i++){
-        printf("[%d] %s - Rp%d (%s)\n", daftarMenu[i].kode, daftarMenu[i].nama, daftarMenu[i].harga, daftarMenu[i].kategori);
+       printf("| %-5d | %-30s | %-8d | %-10s |\n", daftarMenu[i].kode, daftarMenu[i].nama, daftarMenu[i].harga, daftarMenu[i].kategori);
     }
-    printf("==================================\n");
+    printf("==================================================================\n");
+    pauseScreen();
     
 }
 
@@ -28,8 +42,8 @@ void tambahData() {
     clearScreen();
     printf("\n=== Tambah Menu ===\n");
 
-    printf("Masukkan Kode        : ");
-    scanf("%d", &daftarMenu[jumlah].kode);
+    daftarMenu[jumlah].kode = jumlah + 1; 
+    printf("Kode menu otomatis: %d\n", daftarMenu[jumlah].kode);
 
     printf("Masukkan Nama        : ");
     scanf(" %[^\n]", daftarMenu[jumlah].nama);
@@ -37,11 +51,16 @@ void tambahData() {
     printf("Masukkan Harga       : ");
     scanf("%d", &daftarMenu[jumlah].harga);
 
-    printf("Masukkan Kategori    : ");
-    scanf(" %[^\n]", daftarMenu[jumlah].kategori);
+    int pilihKategori;
+    printf("Pilih Kategori:\n");
+    printf("1. Makanan\n2. Minuman\n3. Dessert\n> ");
+    scanf("%d", &pilihKategori);
+
+    strcpy(daftarMenu[jumlah].kategori, kategoriList(pilihKategori));
 
     jumlah++;
     printf("Menu berhasil ditambahkan!\n");
+    pauseScreen();
 }
 
 void hapusData() {
@@ -75,7 +94,7 @@ void editData() {
     clearScreen();
     int kode;
     printf("\n=== Edit Menu ===\n");
-    printf("Masukkan kode menu yang ingin diedit: ");
+    printf("Masukkan kode menu: ");
     scanf("%d", &kode);
 
     int index = -1;
@@ -87,18 +106,21 @@ void editData() {
     }
     if (index == -1) {
         printf("Data tidak ditemukan!\n");
-    } else {
-        printf("Masukkan Menu baru     : ");
-        scanf(" %[^\n]", daftarMenu[index].nama);
+        pauseScreen();
+        return;
+    } 
+    printf("Masukkan Menu baru     : ");
+    scanf(" %[^\n]", daftarMenu[index].nama);
 
-        printf("Masukkan Harga baru    : ");
-        scanf("%d", &daftarMenu[index].harga);
+    printf("Masukkan Harga baru    : ");
+    scanf("%d", &daftarMenu[index].harga);
 
-        printf("Masukkan Kategori baru : ");
-        scanf(" %[^\n]", daftarMenu[index].kategori);
+    int pilihKategori;
+    printf("Pilih kategori baru:\n1. Makanan\n2. Minuman\n3. Dessert\n> ");
+    scanf("%d", &pilihKategori);
 
-        printf("Menu berhasil diperbarui!\n");
-    }
+    strcpy(daftarMenu[index].kategori, kategoriList(pilihKategori));
+    printf("Menu berhasil diperbarui!\n");
     pauseScreen();
 }
 

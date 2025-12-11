@@ -2,15 +2,16 @@
       Cashier
 ====================
 id:01
-time:11/12/2025 19:19
+time:11/12/2025 22:57
 ====================
-2 Ayam Geprek sambal bawang  30000
-1 Milkshake       20000
+2 Susu Soda       30000
+2 Nasi Goreng Spesial  40000
+1 Tiramisu        20000
 ====================
-SUBTOTAL        50000
-PB               5000
+SUBTOTAL        90000
+PB               9000
 ====================
-TOTAL           55000
+TOTAL           99000
 ====================
 
 Terima kasih atas kunjungan Anda!

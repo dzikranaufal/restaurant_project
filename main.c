@@ -6,7 +6,7 @@ int main() {
         clearScreen(); 
         int role = login();
 
-        if (role == 1) {
+        if (role == 1){
             clearScreen();
             adminMenu();
         }

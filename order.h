@@ -2,9 +2,10 @@
 #define ORDER_H
 
 typedef struct {
+    int idOrder;
     int kodeMenu;
     int jumlah;
-    int subtotal;
+    int total;
 } Order;
 
 extern Order daftarOrder[50];

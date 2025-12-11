@@ -21,7 +21,7 @@ void tampilData() {
         printf("[%d] %s - Rp%d (%s)\n", daftarMenu[i].kode, daftarMenu[i].nama, daftarMenu[i].harga, daftarMenu[i].kategori);
     }
     printf("==================================\n");
-    pauseScreen();
+    
 }
 
 void tambahData() {

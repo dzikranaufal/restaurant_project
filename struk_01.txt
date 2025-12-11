@@ -1,0 +1,16 @@
+====================
+      Cashier
+====================
+id:01
+time:11/12/2025 19:19
+====================
+2 Ayam Geprek sambal bawang  30000
+1 Milkshake       20000
+====================
+SUBTOTAL        50000
+PB               5000
+====================
+TOTAL           55000
+====================
+
+Terima kasih atas kunjungan Anda!

@@ -76,7 +76,7 @@ void adminMenu() {
 
         switch (pilih) {
             case 1: tambahData(); break;
-            case 2: tampilData(); break;
+            case 2: tampilData();pauseScreen(); break;
             case 4: tambahOrder(); break;
             case 5: tampilOrder(); break;
             case 0: printf("Logout...\n"); break;

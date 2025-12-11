@@ -1,18 +1,35 @@
 #ifndef ORDER_H
 #define ORDER_H
 
+#define MAX_ORDER 50
+#define MAX_ORDER_ITEMS 50
+
+typedef struct {
+    int kodeMenu;
+    char nama[100];
+    int harga;
+    int qty;
+    int subtotal;
+} OrderItem;
+
 typedef struct {
     int idOrder;
-    int kodeMenu;
-    int jumlah;
+    OrderItem items[MAX_ORDER_ITEMS];
+    int jumlahItem;
     int total;
 } Order;
 
-extern Order daftarOrder[50];
+extern Order daftarOrder[MAX_ORDER];
 extern int jumlahOrder;
 
-void tambahOrder();
-void tampilOrder();
-int cariHargaMenu(int kodeMenu); 
+int cariHargaMenu(int kodeMenu);
+
+void tambahOrder(); 
+void tampilOrder(); 
+void tampilRingkasanOrder();
+void tampilDetailOrder(int idOrder);
+void printStrukKeFile(Order *pesanan, int index);  
+void hapusPesananDariArray(int index);  
+
 
 #endif

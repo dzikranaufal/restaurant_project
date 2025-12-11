@@ -284,24 +284,20 @@ void hapusPesananDariArray(int index) {
 }
 
 void printStrukKeFile(Order *pesanan, int index) {
-    // Buat nama file
     char filename[50];
     sprintf(filename, "struk_%02d.txt", pesanan->idOrder);
     
-    // Buka file untuk ditulis
     FILE *file = fopen(filename, "w");
     if (file == NULL) {
         printf("Gagal membuat file struk!\n");
         return;
     }
     
-    // Dapatkan waktu
     time_t now = time(NULL);
     struct tm *local = localtime(&now);
     int pajak = pesanan->total * 10 / 100;
     int totalDenganPajak = pesanan->total + pajak;
     
-    // Tulis struk ke file
     fprintf(file, "====================\n");
     fprintf(file, "      Cashier\n");
     fprintf(file, "====================\n");

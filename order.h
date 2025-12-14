@@ -14,6 +14,7 @@ typedef struct {
 
 typedef struct {
     int idOrder;
+    char namaOrder[50];
     OrderItem items[MAX_ORDER_ITEMS];
     int jumlahItem;
     int total;
@@ -26,7 +27,6 @@ int cariHargaMenu(int kodeMenu);
 
 void tambahOrder(); 
 void tampilOrder(); 
-void tampilRingkasanOrder();
 void tampilDetailOrder(int idOrder);
 void printStruk(Order *pesanan, int index);  
 void hapusOrder(int index);  

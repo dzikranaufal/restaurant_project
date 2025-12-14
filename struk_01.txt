@@ -1,17 +1,15 @@
 ====================
-      Cashier
+       Cashier
 ====================
 id:01
-time:14/12/2025 14:58
+time:14/12/2025 20:43 jikra
 ====================
-2 Ayam Geprek sambal bawang  30000
-2 Orange Juice    20000
-1 Cheescake Bluberry  25000
+3 Nasi Goreng Spesial  60000
+1 Nasi Goreng Spesial  20000
 ====================
-SUBTOTAL        75000
-PB               7500
+SUBTOTAL        80000
+PB               8000
 ====================
-TOTAL           82500
-====================
+TOTAL           88000
 
-Terima kasih atas kunjungan Anda!
+Terima kasih!

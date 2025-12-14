@@ -8,6 +8,33 @@
 Order daftarOrder[MAX_ORDER];
 int jumlahOrder = 0;
 
+static void cetakStruk(FILE *out, Order *pesanan) {
+    time_t now = time(NULL);
+    struct tm *local = localtime(&now);
+
+    int pajak = pesanan->total * 10 / 100;
+    int totalDenganPajak = pesanan->total + pajak;
+
+    fprintf(out, "====================\n");
+    fprintf(out, "       Cashier\n");
+    fprintf(out, "====================\n");
+    fprintf(out, "id:%02d\n", pesanan->idOrder);
+    fprintf(out, "time:%02d/%02d/%04d %02d:%02d %s\n", local->tm_mday, local->tm_mon + 1, local->tm_year + 1900, local->tm_hour, local->tm_min, pesanan->namaOrder);
+    fprintf(out, "====================\n");
+
+    for (int i = 0; i < pesanan->jumlahItem; i++) {
+        fprintf(out, "%d %-14s%7d\n", pesanan->items[i].qty, pesanan->items[i].nama, pesanan->items[i].subtotal);
+    }
+
+
+    fprintf(out, "====================\n");
+    fprintf(out, "SUBTOTAL%13d\n", pesanan->total);
+    fprintf(out, "PB%19d\n", pajak);
+    fprintf(out, "====================\n");
+    fprintf(out, "TOTAL%16d\n", totalDenganPajak);
+}
+
+
 int cariHargaMenu(int kodeMenu) {
     for (int i = 0; i < jumlah; i++) {
         if (daftarMenu[i].kode == kodeMenu) {
@@ -21,310 +48,150 @@ void tambahOrder() {
     clearScreen();
 
     if (jumlahOrder >= MAX_ORDER) {
-        printf("Maaf, kapasitas pesanan sudah penuh!\n");
+        printf("Kapasitas pesanan sudah penuh\n");
         pauseScreen();
         return;
     }
-    
+
     printf("=== TAMBAH PESANAN BARU ===\n\n");
+
+    Order *pesanan = &daftarOrder[jumlahOrder];
+    memset(pesanan, 0, sizeof(Order));
+
+    printf("Masukan nama pembeli: ");
+    scanf(" %[^\n]", pesanan->namaOrder);
+    
     tampilData();
-    printf("\n");
     
-    int indexKosong = -1;
-    for (int i = 0; i < MAX_ORDER; i++) {
-        if (daftarOrder[i].idOrder == 0) {
-            indexKosong = i;
-            break;
-        }
-    }
-    
-    if (indexKosong == -1) {
-        printf("Tidak ada slot pesanan yang tersedia!\n");
+    pesanan->idOrder = jumlahOrder + 1;
+
+    int jenisMenu;
+    printf("Berapa jenis menu yang ingin dipesan? (maks %d): ", MAX_ORDER_ITEMS);
+    scanf("%d", &jenisMenu);
+
+    if (jenisMenu <= 0 || jenisMenu > MAX_ORDER_ITEMS) {
+        printf("Jumlah tidak valid\n");
         pauseScreen();
         return;
     }
-    
-    Order *pesananBaru = &daftarOrder[indexKosong];
-    pesananBaru->idOrder = indexKosong + 1;
-    pesananBaru->jumlahItem = 0;
-    pesananBaru->total = 0;
-    
-    int jumlahJenisMenu;
-    printf("Berapa jenis menu yang ingin dipesan? (maksimal %d): ", MAX_ORDER_ITEMS);
-    scanf("%d", &jumlahJenisMenu);
-    
-    if (jumlahJenisMenu <= 0 || jumlahJenisMenu > MAX_ORDER_ITEMS) {
-        printf("Jumlah jenis menu tidak valid!\n");
-        pauseScreen();
-        return;
-    }
-    
-    for (int i = 0; i < jumlahJenisMenu; i++) {
-        printf("\n--- Item ke-%d ---\n", i + 1);
-        
-        int kodeMenu;
-        printf("Masukkan kode menu: ");
+
+    for (int i = 0; i < jenisMenu; i++) {
+        int kodeMenu, qty;
+        printf("\nItem ke-%d\n", i + 1);
+        printf("Kode menu: ");
         scanf("%d", &kodeMenu);
-        
-        int hargaMenu = cariHargaMenu(kodeMenu);
-        if (hargaMenu == -1) {
-            printf("Kode menu tidak ditemukan! Coba lagi.\n");
+
+        int harga = cariHargaMenu(kodeMenu);
+        if (harga == -1) {
+            printf("Kode menu tidak ditemukan!\n");
             i--;
             continue;
         }
-        
-        char namaMenu[100] = "Tidak Diketahui";
+
+        char namaMenu[100];
         for (int j = 0; j < jumlah; j++) {
             if (daftarMenu[j].kode == kodeMenu) {
                 strcpy(namaMenu, daftarMenu[j].nama);
                 break;
             }
         }
-        
-        int jumlah;
-        printf("Masukkan jumlah pesanan: ");
-        scanf("%d", &jumlah);
-        
-        if (jumlah <= 0) {
-            printf("Jumlah harus lebih dari 0! Coba lagi.\n");
+
+        printf("Jumlah pesanan: ");
+        scanf("%d", &qty);
+        if (qty <= 0) {
+            printf("Jumlah tidak valid!\n");
             i--;
             continue;
         }
-        
-        int subtotal = hargaMenu * jumlah;
-        
-        int indexItem = pesananBaru->jumlahItem;
-        pesananBaru->items[indexItem].kodeMenu = kodeMenu;
-        strcpy(pesananBaru->items[indexItem].nama, namaMenu);
-        pesananBaru->items[indexItem].harga = hargaMenu;
-        pesananBaru->items[indexItem].qty = jumlah;
-        pesananBaru->items[indexItem].subtotal = subtotal;
-        
-        pesananBaru->total += subtotal;
-        pesananBaru->jumlahItem++;
-        
-        printf("%s x%d = Rp%d\n", namaMenu, jumlah, subtotal);
-    }
-    
-    jumlahOrder++;
-    printf("\n==== PESANAN BERHASIL DITAMBAHKAN ====\n");
-    printf("ID Pesanan: %d\n", pesananBaru->idOrder);
-    printf("Total Harga: Rp%d\n", pesananBaru->total);
-    
-    pauseScreen();
-}
 
-void tampilRingkasanOrder() {
-    clearScreen();
-    printf("=== RINGKASAN SEMUA PESANAN ===\n\n");
-    
-    if (jumlahOrder == 0) {
-        printf("Belum ada pesanan yang dibuat.\n");
-        pauseScreen();
-        return;
+        OrderItem *item = &pesanan->items[pesanan->jumlahItem];
+        item->kodeMenu = kodeMenu;
+        strcpy(item->nama, namaMenu);
+        item->harga = harga;
+        item->qty = qty;
+        item->subtotal = harga * qty;
+
+        pesanan->total += item->subtotal;
+        pesanan->jumlahItem++;
+
+        printf("%s x%d = Rp%d\n", namaMenu, qty, item->subtotal);
     }
-    
-    printf("ID Pesanan | Jumlah Item | Total Harga\n");
-    printf("-----------|-------------|------------\n");
-    
-    int adaPesanan = 0;
-    for (int i = 0; i < MAX_ORDER; i++) {
-        if (daftarOrder[i].idOrder != 0) {
-            printf("%10d | %11d | Rp%d\n",  daftarOrder[i].idOrder,  daftarOrder[i].jumlahItem,  daftarOrder[i].total);
-            adaPesanan = 1;
-        }
-    }
-    
-    if (!adaPesanan) {
-        printf("Tidak ada pesanan yang aktif.\n");
-    }
-    
+
+    jumlahOrder++;
+    printf("\nPesanan berhasil ditambahkan!\n");
     pauseScreen();
 }
 
 void tampilDetailOrder(int idOrder) {
     clearScreen();
-    
-    if (idOrder <= 0 || idOrder > MAX_ORDER) {
-        printf("ID pesanan tidak valid!\n");
+
+    if (idOrder <= 0 || idOrder > jumlahOrder) {
+        printf("ID tidak valid\n");
         pauseScreen();
         return;
     }
-    
-    int ditemukan = 0;
-    int indexPesanan = -1;
-    
-    for (int i = 0; i < MAX_ORDER; i++) {
-        if (daftarOrder[i].idOrder == idOrder) {
-            ditemukan = 1;
-            indexPesanan = i;
-            break;
-        }
-    }
-    
-    if (!ditemukan) {
-        printf("Pesanan dengan ID %d tidak ditemukan!\n", idOrder);
-        pauseScreen();
-        return;
-    }
-    
-    Order *pesanan = &daftarOrder[indexPesanan];
-    
-    time_t now = time(NULL);
-    struct tm *local = localtime(&now);
-    
-    int pajak = pesanan->total * 10 / 100;
-    int totalDenganPajak = pesanan->total + pajak;
-    
-    printf("====================\n");
-    printf("      Cashier\n");
-    printf("====================\n");
-    printf("id:%02d\n", pesanan->idOrder);
-    printf("time:%02d/%02d/%04d\n", local->tm_mday, local->tm_mon + 1, local->tm_year + 1900);
-    printf("====================\n");
-    
-    for (int i = 0; i < pesanan->jumlahItem; i++) {
-        OrderItem *item = &pesanan->items[i];
-        char namaTampil[15];
-    
-        strncpy(namaTampil, item->nama, 14);
-        namaTampil[14] = '\0';
-        printf("%d %-14s%7d\n", item->qty, namaTampil, item->subtotal);
-    }
-    
-    printf("====================\n");
-    printf("SUBTOTAL%13d\n", pesanan->total);
-    printf("PB%19d\n", pajak);
-    printf("====================\n");
-    printf("TOTAL%16d\n", totalDenganPajak);
-    printf("\n");
-    printf("Terima kasih!\n");
-    printf("PILIH OPSI:\n");
-    printf("1. PRINT STRUK (buat file .txt dan hapus pesanan)\n");
-    printf("2. SELESAI (hapus pesanan tanpa print)\n");
-    printf("3. KEMBALI (biarkan pesanan tetap ada)\n");
-    printf("Pilihan: ");
-    
-    int pilihan;
-    scanf("%d", &pilihan);
-    
-    switch(pilihan) {
-        case 1: 
-            printStruk(pesanan, indexPesanan);
-            break;
-            
-        case 2: 
-            hapusOrder(indexPesanan);
-            break;
-            
-        case 3:
-            printf("Pesanan tetap disimpan.\n");
-            break;
-            
-        default:
-            printf("Pilihan tidak valid!\n");
-    }
+
+    Order *pesanan = &daftarOrder[idOrder - 1];
+    cetakStruk(stdout, pesanan);
+
+    printf("\n1. Print Struk\n2. Selesai\n0. Kembali\nPilihan: ");
+
+    int pilih;
+    scanf("%d", &pilih);
+
+    if (pilih == 1) printStruk(pesanan, idOrder - 1);
+    else if (pilih == 2) hapusOrder(idOrder - 1);
+
     pauseScreen();
 }
 
 void tampilOrder() {
     clearScreen();
-    printf("=== LIHAT PESANAN ===\n\n");
-    
+
     if (jumlahOrder == 0) {
-        printf("Belum ada pesanan.\n");
+        printf("Belum ada pesanan\n");
         pauseScreen();
         return;
     }
-    
-    printf("Daftar Pesanan Aktif:\n");
-    for (int i = 0; i < MAX_ORDER; i++) {
-        if (daftarOrder[i].idOrder != 0) {
-            printf("[ID %d] Items: %d | Total: Rp%d\n", daftarOrder[i].idOrder, daftarOrder[i].jumlahItem, daftarOrder[i].total);
-        }
+
+    printf("ID | Nama Pembeli | Total\n");
+    printf("---------------------------\n");
+
+    for (int i = 0; i < jumlahOrder; i++) {
+        printf("%2d | %-12s | Rp.%d\n", daftarOrder[i].idOrder, daftarOrder[i].namaOrder, daftarOrder[i].total);
     }
-    
-    int idYangDicari;
-    printf("\nMasukkan ID pesanan untuk melihat detail (0 untuk batal): ");
-    scanf("%d", &idYangDicari);
-    
-    if (idYangDicari != 0) {
-        tampilDetailOrder(idYangDicari);  
-    }
+
+    int id;
+    printf("\nMasukan ID pesanan (0 batal): ");
+    scanf("%d", &id);
+
+    if (id > 0 && id <= jumlahOrder)
+    tampilDetailOrder(id);
 }
 
 void hapusOrder(int index) {
-    if (index < 0 || index >= MAX_ORDER) {
-        printf("Index tidak valid!\n");
-        return;
-    }
-    
-    if (daftarOrder[index].idOrder == 0) {
-        printf("Pesanan sudah tidak ada!\n");
-        return;
-    }
-    
-    printf("Menghapus pesanan ID: %02d...\n", daftarOrder[index].idOrder);
-    
-    daftarOrder[index].idOrder = 0;
-    daftarOrder[index].jumlahItem = 0;
-    daftarOrder[index].total = 0;
-    
-    for (int i = 0; i < MAX_ORDER_ITEMS; i++) {
-        daftarOrder[index].items[i].kodeMenu = 0;
-        daftarOrder[index].items[i].nama[0] = '\0';
-        daftarOrder[index].items[i].harga = 0;
-        daftarOrder[index].items[i].qty = 0;
-        daftarOrder[index].items[i].subtotal = 0;
-    }
-    
+    if (index < 0 || index >= jumlahOrder) return;
+
+    for (int i = index; i < jumlahOrder - 1; i++) daftarOrder[i] = daftarOrder[i + 1];
+
+    memset(&daftarOrder[jumlahOrder - 1], 0, sizeof(Order));
     jumlahOrder--;
-    
-    printf("✓ Pesanan berhasil dihapus!\n");
+
+    printf("Pesanan dihapus\n");
 }
 
 void printStruk(Order *pesanan, int index) {
-    char filename[50];
-    sprintf(filename, "struk_%02d.txt", pesanan->idOrder);
-    
-    FILE *file = fopen(filename, "w");
-    if (file == NULL) {
-        printf("Gagal membuat file struk!\n");
-        return;
-    }
-    
-    time_t now = time(NULL);
-    struct tm *local = localtime(&now);
-    int pajak = pesanan->total * 10 / 100;
-    int totalDenganPajak = pesanan->total + pajak;
-    
-    fprintf(file, "====================\n");
-    fprintf(file, "      Cashier\n");
-    fprintf(file, "====================\n");
-    fprintf(file, "id:%02d\n", pesanan->idOrder);
-    fprintf(file, "time:%02d/%02d/%04d %02d:%02d\n", 
-            local->tm_mday, local->tm_mon + 1, local->tm_year + 1900,
-            local->tm_hour, local->tm_min);
-    fprintf(file, "====================\n");
-    
-    for (int i = 0; i < pesanan->jumlahItem; i++) {
-        OrderItem *item = &pesanan->items[i];
-        fprintf(file, "%d %-14s%7d\n", 
-                item->qty, item->nama, item->subtotal);
-    }
-    
-    fprintf(file, "====================\n");
-    fprintf(file, "SUBTOTAL%13d\n", pesanan->total);
-    fprintf(file, "PB%19d\n", pajak);
-    fprintf(file, "====================\n");
-    fprintf(file, "TOTAL%16d\n", totalDenganPajak);
-    fprintf(file, "====================\n");
-    fprintf(file, "\nTerima kasih atas kunjungan Anda!\n");
-    
-    fclose(file);
-    
-    printf("\nSTRUK berhasil dicetak ke file: %s\n", filename);
-    printf("Pesanan akan dihapus dari sistem...\n");
-    
+    char file[32];
+    sprintf(file, "struk_%02d.txt", pesanan->idOrder);
+
+    FILE *fp = fopen(file, "w");
+    if (!fp) return;
+
+    cetakStruk(fp, pesanan);
+    fprintf(fp, "\nTerima kasih!\n");
+
+    fclose(fp);
+    printf("Struk dicetak: %s\n", file);
+
     hapusOrder(index);
 }

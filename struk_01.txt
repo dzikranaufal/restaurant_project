@@ -2,16 +2,16 @@
       Cashier
 ====================
 id:01
-time:11/12/2025 22:57
+time:14/12/2025 14:58
 ====================
-2 Susu Soda       30000
-2 Nasi Goreng Spesial  40000
-1 Tiramisu        20000
+2 Ayam Geprek sambal bawang  30000
+2 Orange Juice    20000
+1 Cheescake Bluberry  25000
 ====================
-SUBTOTAL        90000
-PB               9000
+SUBTOTAL        75000
+PB               7500
 ====================
-TOTAL           99000
+TOTAL           82500
 ====================
 
 Terima kasih atas kunjungan Anda!

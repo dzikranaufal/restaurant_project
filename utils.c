@@ -69,10 +69,9 @@ void adminMenu() {
         printf("2. Tampil Menu\n");
         printf("3. Hapus Menu\n");
         printf("4. Edit Menu\n");
-        printf("5. Sorting Menu\n");
-        printf("6. Search Menu\n");
-        printf("7. Tambah Order\n");
-        printf("8. Tampil Order\n");
+        printf("5. Search Menu\n");
+        printf("6. Tambah Order\n");
+        printf("7. Tampil Order\n");
         printf("0. Logout\n");
         printf("Pilih: ");
         scanf("%d", &pilih);
@@ -82,10 +81,9 @@ void adminMenu() {
             case 2: tampilData();pauseScreen(); break;
             case 3: hapusData(); break;
             case 4: editData(); break;
-            case 5: sortingMenu(); break;
-            case 6: searchMenu(); break;
-            case 7: tambahOrder(); break;
-            case 8: tampilOrder(); break;
+            case 5: searchMenu(); break;
+            case 6: tambahOrder(); break;
+            case 7: tampilOrder(); break;
             case 0: printf("Logout...\n"); break;
             default: printf("Pilihan salah!\n");
         }

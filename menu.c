@@ -23,8 +23,24 @@ char* kategoriList(int pilih) {
     }
 }
 
+void sortHargaAsc();
+void sortHargaDesc();
 
 void tampilData() {
+    clearScreen();
+
+    int pilih;
+    printf("=== TAMPILKAN MENU ===\n");
+    printf("1. Harga Termurah (ASC)\n");
+    printf("2. Harga Termahal (DESC)\n");
+    printf("Pilih: ");
+    scanf("%d", &pilih);
+
+    if (pilih == 1)
+        sortHargaAsc();
+    else if (pilih == 2)
+        sortHargaDesc();
+
     clearScreen();
     printf("\n========================== DAFTAR MENU ===========================\n");
     printf("| %-5s | %-30s | %-8s | %-10s |\n", "Kode", "Nama Menu", "Harga", "Kategori");
@@ -38,8 +54,33 @@ void tampilData() {
     
 }
 
+void sortHargaAsc() {
+    for (int i = 0; i < jumlah - 1; i++) {
+        for (int j = 0; j < jumlah - i - 1; j++) {
+            if (daftarMenu[j].harga > daftarMenu[j + 1].harga) {
+                Menu temp = daftarMenu[j];
+                daftarMenu[j] = daftarMenu[j + 1];
+                daftarMenu[j + 1] = temp;
+            }
+        }
+    }
+}
+
+void sortHargaDesc() {
+    for (int i = 0; i < jumlah - 1; i++) {
+        for (int j = 0; j < jumlah - i - 1; j++) {
+            if (daftarMenu[j].harga < daftarMenu[j + 1].harga) {
+                Menu temp = daftarMenu[j];
+                daftarMenu[j] = daftarMenu[j + 1];
+                daftarMenu[j + 1] = temp;
+            }
+        }
+    }
+}
+
 void tambahData() {
     clearScreen();
+
     printf("\n=== Tambah Menu ===\n");
 
     daftarMenu[jumlah].kode = jumlah + 1; 
@@ -92,6 +133,7 @@ void hapusData() {
 
 void editData() {
     clearScreen();
+
     int kode;
     printf("\n=== Edit Menu ===\n");
     printf("Masukkan kode menu: ");
@@ -121,24 +163,6 @@ void editData() {
 
     strcpy(daftarMenu[index].kategori, kategoriList(pilihKategori));
     printf("Menu berhasil diperbarui!\n");
-    pauseScreen();
-}
-
-void sortingMenu() {
-    clearScreen();
-    printf("\n=== Sorting Harga Asc ===\n");
-
-    for (int i = 0; i < jumlah - 1; i++) {
-        for (int j = 0; j < jumlah - i - 1; j++) {
-            if (daftarMenu[j].harga > daftarMenu[j+1].harga) {
-                Menu temp = daftarMenu[j];
-                daftarMenu[j] = daftarMenu[j+1];
-                daftarMenu[j+1] = temp;
-            }
-        }
-    }
-
-    printf("Sorting selesai!\n");
     pauseScreen();
 }
 

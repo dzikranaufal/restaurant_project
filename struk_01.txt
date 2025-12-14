@@ -2,14 +2,15 @@
        Cashier
 ====================
 id:01
-time:14/12/2025 20:43 jikra
+time:14/12/2025 22:09 windi
 ====================
-3 Nasi Goreng Spesial  60000
-1 Nasi Goreng Spesial  20000
+1 Ayam Geprek sambal bawang  15000
+1 Es Teh Manis     5000
+1 Pencake Ice Cream  15000
 ====================
-SUBTOTAL        80000
-PB               8000
+SUBTOTAL        35000
+PB               3500
 ====================
-TOTAL           88000
+TOTAL           38500
 
 Terima kasih!

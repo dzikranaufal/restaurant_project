@@ -29,27 +29,54 @@ void sortHargaDesc();
 void tampilData() {
     clearScreen();
 
-    int pilih;
-    printf("=== TAMPILKAN MENU ===\n");
-    printf("1. Harga Termurah (ASC)\n");
-    printf("2. Harga Termahal (DESC)\n");
-    printf("Pilih: ");
-    scanf("%d", &pilih);
+    int pilihSort, pilihKategori;
+    char kategoriDipilih[20];
+    int tampilSemua = 0;
 
-    if (pilih == 1)
+    printf("=== TAMPILKAN MENU ===\n");
+    printf("Pilih Sorting:\n");
+    printf("1. Harga Termurah (asc)\n");
+    printf("2. Harga Termahal (desc)\n");
+    printf("Pilih: ");
+    scanf("%d", &pilihSort);
+
+    if (pilihSort == 1)
         sortHargaAsc();
-    else if (pilih == 2)
+    else if (pilihSort == 2)
         sortHargaDesc();
+
+    clearScreen();
+    printf("Pilih Kategori:\n");
+    printf("0. Semua\n");
+    printf("1. Makanan\n");
+    printf("2. Minuman\n");
+    printf("3. Dessert\n");
+    printf("Pilih: ");
+    scanf("%d", &pilihKategori);
+
+    if (pilihKategori == 0) {
+        tampilSemua = 1;
+    } else {
+        strcpy(kategoriDipilih, kategoriList(pilihKategori));
+    }
 
     clearScreen();
     printf("\n========================== DAFTAR MENU ===========================\n");
     printf("| %-5s | %-30s | %-8s | %-10s |\n", "Kode", "Nama Menu", "Harga", "Kategori");
     printf("------------------------------------------------------------------\n");
     
+    int ditemukan = 0;
     for(int i = 0; i < jumlah; i++){
-        printf("| %-5d | %-30s | %-8d | %-10s |\n", daftarMenu[i].kode, daftarMenu[i].nama, daftarMenu[i].harga, daftarMenu[i].kategori);
+        if(tampilSemua || strcmp(daftarMenu[i].kategori, kategoriDipilih) == 0){
+            printf("| %-5d | %-30s | %-8d | %-10s |\n", daftarMenu[i].kode, daftarMenu[i].nama, daftarMenu[i].harga, daftarMenu[i].kategori);
+            ditemukan = 1;
+        }
+    }
+    if(!ditemukan){
+        printf("Data tidak ditemukan!\n");
     }
     printf("==================================================================\n");
+    pauseScreen();
 }
 
 void sortHargaAsc() {

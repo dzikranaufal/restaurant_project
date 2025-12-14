@@ -28,8 +28,8 @@ void tambahOrder();
 void tampilOrder(); 
 void tampilRingkasanOrder();
 void tampilDetailOrder(int idOrder);
-void printStrukKeFile(Order *pesanan, int index);  
-void hapusPesananDariArray(int index);  
+void printStruk(Order *pesanan, int index);  
+void hapusOrder(int index);  
 
 
 #endif

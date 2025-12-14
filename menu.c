@@ -47,11 +47,9 @@ void tampilData() {
     printf("------------------------------------------------------------------\n");
     
     for(int i = 0; i < jumlah; i++){
-       printf("| %-5d | %-30s | %-8d | %-10s |\n", daftarMenu[i].kode, daftarMenu[i].nama, daftarMenu[i].harga, daftarMenu[i].kategori);
+        printf("| %-5d | %-30s | %-8d | %-10s |\n", daftarMenu[i].kode, daftarMenu[i].nama, daftarMenu[i].harga, daftarMenu[i].kategori);
     }
     printf("==================================================================\n");
-    pauseScreen();
-    
 }
 
 void sortHargaAsc() {
@@ -181,6 +179,7 @@ void searchMenu() {
             index = 1;
         }
     }
+    
     if (!index) printf("Menu tidak ditemukan!\n");
     pauseScreen();
 }

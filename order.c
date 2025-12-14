@@ -19,7 +19,7 @@ int cariHargaMenu(int kodeMenu) {
 
 void tambahOrder() {
     clearScreen();
-    
+
     if (jumlahOrder >= MAX_ORDER) {
         printf("Maaf, kapasitas pesanan sudah penuh!\n");
         pauseScreen();
@@ -103,7 +103,7 @@ void tambahOrder() {
         pesananBaru->total += subtotal;
         pesananBaru->jumlahItem++;
         
-        printf("✓ %s x%d = Rp%d\n", namaMenu, jumlah, subtotal);
+        printf("%s x%d = Rp%d\n", namaMenu, jumlah, subtotal);
     }
     
     jumlahOrder++;
@@ -210,11 +210,11 @@ void tampilDetailOrder(int idOrder) {
     
     switch(pilihan) {
         case 1: 
-            printStrukKeFile(pesanan, indexPesanan);
+            printStruk(pesanan, indexPesanan);
             break;
             
         case 2: 
-            hapusPesananDariArray(indexPesanan);
+            hapusOrder(indexPesanan);
             break;
             
         case 3:
@@ -253,7 +253,7 @@ void tampilOrder() {
     }
 }
 
-void hapusPesananDariArray(int index) {
+void hapusOrder(int index) {
     if (index < 0 || index >= MAX_ORDER) {
         printf("Index tidak valid!\n");
         return;
@@ -283,7 +283,7 @@ void hapusPesananDariArray(int index) {
     printf("✓ Pesanan berhasil dihapus!\n");
 }
 
-void printStrukKeFile(Order *pesanan, int index) {
+void printStruk(Order *pesanan, int index) {
     char filename[50];
     sprintf(filename, "struk_%02d.txt", pesanan->idOrder);
     
@@ -326,5 +326,5 @@ void printStrukKeFile(Order *pesanan, int index) {
     printf("\nSTRUK berhasil dicetak ke file: %s\n", filename);
     printf("Pesanan akan dihapus dari sistem...\n");
     
-    hapusPesananDariArray(index);
+    hapusOrder(index);
 }

@@ -8,121 +8,120 @@ Menu daftarMenu[50] = {
     {2, "Nasi Goreng Spesial", 20000, "Makanan"},
     {3, "Milkshake", 20000, "Minuman"},
     {4, "Sambal Cumi", 15000, "Makanan"},
-    {5, "Cheescake Bluberry", 25000, "Dessert"},
+    {5, "Cheescake Bluberry", 25000, "Makanan"},
     {6, "Orange Juice", 10000, "Minuman"}
 };
 
 int jumlah = 6;
 
-char* kategoriList(int pilih) {
-    switch(pilih) {
-        case 1: return "Makanan";
-        case 2: return "Minuman";
-        case 3: return "Dessert";
-        default: return "Lainnya";
+void sortMenu(SortType type) {
+    if (type == SORT_NONE) return;
+
+    for (int i = 0; i < jumlah - 1; i++) {
+        for (int j = 0; j < jumlah - i - 1; j++) {
+            int swap = 0;
+
+            switch (type) {
+                case SORT_HARGA_ASC:
+                    swap = daftarMenu[j].harga > daftarMenu[j + 1].harga;
+                    break;
+                case SORT_HARGA_DESC:
+                    swap = daftarMenu[j].harga < daftarMenu[j + 1].harga;
+                    break;
+                case SORT_NAMA_ASC:
+                    swap = strcmp(daftarMenu[j].nama, daftarMenu[j + 1].nama) > 0;
+                    break;
+                case SORT_NAMA_DESC:
+                    swap = strcmp(daftarMenu[j].nama, daftarMenu[j + 1].nama) < 0;
+                    break;
+                default:
+                    break;
+            }
+
+            if (swap) {
+                Menu temp = daftarMenu[j];
+                daftarMenu[j] = daftarMenu[j + 1];
+                daftarMenu[j + 1] = temp;
+            }
+        }
     }
 }
 
-void sortHargaAsc();
-void sortHargaDesc();
-
-void tampilData() {
+void tampilMenuPerKategori() {
     clearScreen();
 
-    int pilihSort, pilihKategori;
-    char kategoriDipilih[20];
-    int tampilSemua = 0;
+    const char *kategori[] = {"Makanan", "Minuman", "Dessert"};
 
-    printf("=== TAMPILKAN MENU ===\n");
-    printf("Pilih Sorting:\n");
-    printf("1. Harga Termurah (asc)\n");
-    printf("2. Harga Termahal (desc)\n");
-    printf("Pilih: ");
-    scanf("%d", &pilihSort);
+    printf("=========== DAFTAR MENU ===========\n");
 
-    if (pilihSort == 1)
-        sortHargaAsc();
-    else if (pilihSort == 2)
-        sortHargaDesc();
+    for (int k = 0; k < 3; k++) {
+        printf("\n--- %s ---\n", kategori[k]);
+        int ada = 0;
 
-    clearScreen();
-    printf("Pilih Kategori:\n");
-    printf("0. Semua\n");
-    printf("1. Makanan\n");
-    printf("2. Minuman\n");
-    printf("3. Dessert\n");
-    printf("Pilih: ");
-    scanf("%d", &pilihKategori);
-
-    if (pilihKategori == 0) {
-        tampilSemua = 1;
-    } else {
-        strcpy(kategoriDipilih, kategoriList(pilihKategori));
-    }
-
-    clearScreen();
-    printf("\n========================== DAFTAR MENU ===========================\n");
-    printf("| %-5s | %-30s | %-8s | %-10s |\n", "Kode", "Nama Menu", "Harga", "Kategori");
-    printf("------------------------------------------------------------------\n");
-    
-    int ditemukan = 0;
-    for(int i = 0; i < jumlah; i++){
-        if(tampilSemua || strcmp(daftarMenu[i].kategori, kategoriDipilih) == 0){
-            printf("| %-5d | %-30s | %-8d | %-10s |\n", daftarMenu[i].kode, daftarMenu[i].nama, daftarMenu[i].harga, daftarMenu[i].kategori);
-            ditemukan = 1;
+        for (int i = 0; i < jumlah; i++) {
+            if (strcmp(daftarMenu[i].kategori, kategori[k]) == 0) {
+                printf("[%d] %-30s Rp%d\n", daftarMenu[i].kode, daftarMenu[i].nama, daftarMenu[i].harga);
+                ada = 1;
+            }
         }
+
+        if (!ada)
+            printf("(Tidak ada menu)\n");
     }
-    if(!ditemukan){
-        printf("Data tidak ditemukan!\n");
+
+    printf("===================================\n");
+}
+
+void menuController() {
+    int pilih;
+    clearScreen();
+
+    printf("=== SORT MENU ===\n");
+    printf("1. Harga Termurah\n");
+    printf("2. Harga Termahal\n");
+    printf("3. Nama A-Z\n");
+    printf("4. Nama Z-A\n");
+    printf("0. Tanpa Sorting\n");
+    printf("Pilih: ");
+    scanf("%d", &pilih);
+
+    switch (pilih) {
+        case 1: sortMenu(SORT_HARGA_ASC); break;
+        case 2: sortMenu(SORT_HARGA_DESC); break;
+        case 3: sortMenu(SORT_NAMA_ASC); break;
+        case 4: sortMenu(SORT_NAMA_DESC); break;
+        default: sortMenu(SORT_NONE); break;
     }
-    printf("==================================================================\n");
+
+    tampilMenuPerKategori();
     pauseScreen();
-}
-
-void sortHargaAsc() {
-    for (int i = 0; i < jumlah - 1; i++) {
-        for (int j = 0; j < jumlah - i - 1; j++) {
-            if (daftarMenu[j].harga > daftarMenu[j + 1].harga) {
-                Menu temp = daftarMenu[j];
-                daftarMenu[j] = daftarMenu[j + 1];
-                daftarMenu[j + 1] = temp;
-            }
-        }
-    }
-}
-
-void sortHargaDesc() {
-    for (int i = 0; i < jumlah - 1; i++) {
-        for (int j = 0; j < jumlah - i - 1; j++) {
-            if (daftarMenu[j].harga < daftarMenu[j + 1].harga) {
-                Menu temp = daftarMenu[j];
-                daftarMenu[j] = daftarMenu[j + 1];
-                daftarMenu[j + 1] = temp;
-            }
-        }
-    }
 }
 
 void tambahData() {
     clearScreen();
 
-    printf("\n=== Tambah Menu ===\n");
+    if (jumlah >= MAX_MENU) {
+        printf("Menu penuh!\n");
+        pauseScreen();
+        return;
+    }
 
-    daftarMenu[jumlah].kode = jumlah + 1; 
-    printf("Kode menu otomatis: %d\n", daftarMenu[jumlah].kode);
+    daftarMenu[jumlah].kode = jumlah + 1;
+    printf("Kode otomatis: %d\n", daftarMenu[jumlah].kode);
 
-    printf("Masukkan Nama        : ");
+    printf("Nama menu  : ");
     scanf(" %[^\n]", daftarMenu[jumlah].nama);
 
-    printf("Masukkan Harga       : ");
+    printf("Harga      : ");
     scanf("%d", &daftarMenu[jumlah].harga);
 
-    int pilihKategori;
-    printf("Pilih Kategori:\n");
-    printf("1. Makanan\n2. Minuman\n3. Dessert\n> ");
-    scanf("%d", &pilihKategori);
+    int k;
+    printf("Kategori:\n1. Makanan\n2. Minuman\n3. Dessert\n> ");
+    scanf("%d", &k);
 
-    strcpy(daftarMenu[jumlah].kategori, kategoriList(pilihKategori));
+    if (k == 1) strcpy(daftarMenu[jumlah].kategori, "Makanan");
+    else if (k == 2) strcpy(daftarMenu[jumlah].kategori, "Minuman");
+    else strcpy(daftarMenu[jumlah].kategori, "Dessert");
 
     jumlah++;
     printf("Menu berhasil ditambahkan!\n");
@@ -159,37 +158,41 @@ void hapusData() {
 void editData() {
     clearScreen();
 
-    int kode;
-    printf("\n=== Edit Menu ===\n");
-    printf("Masukkan kode menu: ");
+    int kode, index = -1;
+    printf("Kode menu: ");
     scanf("%d", &kode);
 
-    int index = -1;
-    for(int i = 0; i < jumlah; i++){
-        if (daftarMenu[i].kode == kode){
+    for (int i = 0; i < jumlah; i++) {
+        if (daftarMenu[i].kode == kode) {
             index = i;
             break;
         }
     }
+
     if (index == -1) {
-        printf("Data tidak ditemukan!\n");
+        printf("Menu tidak ditemukan!\n");
         pauseScreen();
         return;
-    } 
-    printf("Masukkan Menu baru     : ");
+    }
+
+    printf("Nama baru  : ");
     scanf(" %[^\n]", daftarMenu[index].nama);
 
-    printf("Masukkan Harga baru    : ");
+    printf("Harga baru : ");
     scanf("%d", &daftarMenu[index].harga);
 
-    int pilihKategori;
-    printf("Pilih kategori baru:\n1. Makanan\n2. Minuman\n3. Dessert\n> ");
-    scanf("%d", &pilihKategori);
+    int k;
+    printf("Kategori:\n1. Makanan\n2. Minuman\n3. Dessert\n> ");
+    scanf("%d", &k);
 
-    strcpy(daftarMenu[index].kategori, kategoriList(pilihKategori));
-    printf("Menu berhasil diperbarui!\n");
+    if (k == 1) strcpy(daftarMenu[index].kategori, "Makanan");
+    else if (k == 2) strcpy(daftarMenu[index].kategori, "Minuman");
+    else strcpy(daftarMenu[index].kategori, "Dessert");
+
+    printf("Menu diperbarui!\n");
     pauseScreen();
 }
+
 
 void searchMenu() {
     clearScreen();

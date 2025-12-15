@@ -78,7 +78,7 @@ void adminMenu() {
 
         switch (pilih) {
             case 1: tambahData(); break;
-            case 2: tampilData();pauseScreen(); break;
+            case 2: menuController(); break;
             case 3: hapusData(); break;
             case 4: editData(); break;
             case 5: searchMenu(); break;

@@ -26,7 +26,6 @@ static void cetakStruk(FILE *out, Order *pesanan) {
         fprintf(out, "%d %-14s%7d\n", pesanan->items[i].qty, pesanan->items[i].nama, pesanan->items[i].subtotal);
     }
 
-
     fprintf(out, "====================\n");
     fprintf(out, "SUBTOTAL%13d\n", pesanan->total);
     fprintf(out, "PB%19d\n", pajak);
@@ -61,7 +60,7 @@ void tambahOrder() {
     printf("Masukan nama pembeli: ");
     scanf(" %[^\n]", pesanan->namaOrder);
     
-    tampilData();
+    tampilMenuPerKategori();
     
     pesanan->idOrder = jumlahOrder + 1;
 

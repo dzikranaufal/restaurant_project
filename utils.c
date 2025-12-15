@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <conio.h>
+#include "ansi.h"
 #include "utils.h"
 #include "menu.h"
 #include "order.h"
@@ -44,12 +45,17 @@ void inputPassword(char *pass) {
 int login() {
     char user[50], pass[50];
 
-    printf("\n======= LOGIN =======\n");
-    printf("Username: ");
-    scanf("%s", user);
+    printf("╔══════════════════════════════╗\n");
+    printf("║          LOGIN SISTEM        ║\n");
+    printf("╠══════════════════════════════╣\n");
+    printf("║ Username : ");
+    scanf("%49s", user);
 
-    printf("Password: ");
-    inputPassword(pass);  
+    printf("║ Password : ");
+    inputPassword(pass);
+    printf("\n╚══════════════════════════════╝\n");
+
+    printf("\nMemverifikasi akun...\n"); 
 
     if (strcmp(user, "admin") == 0 && strcmp(pass, "admin123") == 0) {
         return 1; 
@@ -64,16 +70,21 @@ void adminMenu() {
     int pilih;
     do {
         clearScreen();
-        printf("\n===== MENU ADMIN =====\n");
-        printf("1. Tambah Menu\n");
-        printf("2. Tampil Menu\n");
-        printf("3. Hapus Menu\n");
-        printf("4. Edit Menu\n");
-        printf("5. Search Menu\n");
-        printf("6. Tambah Order\n");
-        printf("7. Tampil Order\n");
-        printf("0. Logout\n");
-        printf("Pilih: ");
+        printf("\n");
+        printf(BOLD "╔══════════════════════════════╗\n" RESET);
+        printf(BOLD "║          MENU ADMIN          ║\n" RESET);
+        printf(BOLD "╠══════════════════════════════╣\n" RESET);
+        printf(BOLD "║ 1. " RESET "Tambah Menu           ║\n");
+        printf(BOLD "║ 2. " RESET "Tampil Menu           ║\n");
+        printf(BOLD "║ 3. " RESET "Hapus Menu            ║\n");
+        printf(BOLD "║ 4. " RESET "Edit Menu             ║\n");
+        printf(BOLD "║ 5. " RESET "Search Menu           ║\n");
+        printf(BOLD "║ 6. " RESET "Tambah Order          ║\n");
+        printf(BOLD "║ 7. " RESET "Tampil Order          ║\n");
+        printf(BOLD "╠══════════════════════════════╣\n" RESET);
+        printf(BOLD "║ 0. " RESET "Logout                ║\n");
+        printf(BOLD "╚══════════════════════════════╝\n" RESET);
+        printf(BOLD "Pilih menu ➜ " RESET);
         scanf("%d", &pilih);
 
         switch (pilih) {
@@ -95,11 +106,16 @@ void cashierMenu() {
     int pilih;
     do {
         clearScreen();
-        printf("\n===== MENU CASHIER =====\n");
-        printf("1. Tambah Order\n");
-        printf("2. Tampil Order\n");
-        printf("0. Logout\n");
-        printf("Pilih: ");
+        printf("\n");
+        printf(BOLD "╔══════════════════════════════╗\n" RESET);
+        printf(BOLD "║         MENU CASHIER         ║\n" RESET);
+        printf(BOLD "╠══════════════════════════════╣\n" RESET);
+        printf(BOLD "║ 1. " RESET "Tambah Order          ║\n");
+        printf(BOLD "║ 2. " RESET "Tampil Order          ║\n");
+        printf(BOLD "╠══════════════════════════════╣\n" RESET);
+        printf(BOLD "║ 0. " RESET "Logout                ║\n");
+        printf(BOLD "╚══════════════════════════════╝\n" RESET);
+        printf(BOLD "Pilih menu ➜ " RESET);
         scanf("%d", &pilih);
 
         switch (pilih) {

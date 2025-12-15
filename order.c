@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+#include "ansi.h"
 #include "order.h"
 #include "menu.h" 
 #include "utils.h" 
@@ -47,47 +48,57 @@ void tambahOrder() {
     clearScreen();
 
     if (jumlahOrder >= MAX_ORDER) {
-        printf("Kapasitas pesanan sudah penuh\n");
+        printf(BOLD "Kapasitas pesanan sudah penuh!\n" RESET);
         pauseScreen();
         return;
     }
 
-    printf("=== TAMBAH PESANAN BARU ===\n\n");
+    printf("\n");
+    printf(BOLD "╔════════════════════════════════════╗\n" RESET);
+    printf(BOLD "║        TAMBAH PESANAN BARU         ║\n" RESET);
+    printf(BOLD "╚════════════════════════════════════╝\n" RESET);
 
     Order *pesanan = &daftarOrder[jumlahOrder];
     memset(pesanan, 0, sizeof(Order));
-
-    printf("Masukan nama pembeli: ");
-    scanf(" %[^\n]", pesanan->namaOrder);
-    
-    tampilMenuPerKategori();
-    
     pesanan->idOrder = jumlahOrder + 1;
 
+    printf(BOLD "ID Order : " RESET "%d\n", pesanan->idOrder);
+
+    printf(BOLD "Nama Pembeli ➜ " RESET);
+    scanf(" %[^\n]", pesanan->namaOrder);
+
+    /* Tampilkan menu */
+    tampilMenuPerKategori();
+
     int jenisMenu;
-    printf("Berapa jenis menu yang ingin dipesan? (maks %d): ", MAX_ORDER_ITEMS);
+    printf(BOLD "\nBerapa jenis menu yang dipesan? (maks %d) ➜ " RESET, MAX_ORDER_ITEMS);
     scanf("%d", &jenisMenu);
 
     if (jenisMenu <= 0 || jenisMenu > MAX_ORDER_ITEMS) {
-        printf("Jumlah tidak valid\n");
+        printf(BOLD "Jumlah tidak valid!\n" RESET);
         pauseScreen();
         return;
     }
 
     for (int i = 0; i < jenisMenu; i++) {
         int kodeMenu, qty;
-        printf("\nItem ke-%d\n", i + 1);
-        printf("Kode menu: ");
+
+        printf("\n");
+        printf(BOLD "┌──────────────────────────────┐\n" RESET);
+        printf(BOLD "│ Item ke-%-20d │\n" RESET, i + 1);
+        printf(BOLD "└──────────────────────────────┘\n" RESET);
+
+        printf(BOLD "Kode Menu ➜ " RESET);
         scanf("%d", &kodeMenu);
 
         int harga = cariHargaMenu(kodeMenu);
         if (harga == -1) {
-            printf("Kode menu tidak ditemukan!\n");
+            printf(BOLD "Kode menu tidak ditemukan!\n" RESET);
             i--;
             continue;
         }
 
-        char namaMenu[100];
+        char namaMenu[100] = "";
         for (int j = 0; j < jumlah; j++) {
             if (daftarMenu[j].kode == kodeMenu) {
                 strcpy(namaMenu, daftarMenu[j].nama);
@@ -95,10 +106,11 @@ void tambahOrder() {
             }
         }
 
-        printf("Jumlah pesanan: ");
+        printf(BOLD "Jumlah ➜ " RESET);
         scanf("%d", &qty);
+
         if (qty <= 0) {
-            printf("Jumlah tidak valid!\n");
+            printf(BOLD "Jumlah tidak valid!\n" RESET);
             i--;
             continue;
         }
@@ -113,13 +125,20 @@ void tambahOrder() {
         pesanan->total += item->subtotal;
         pesanan->jumlahItem++;
 
-        printf("%s x%d = Rp%d\n", namaMenu, qty, item->subtotal);
+        printf(BOLD "> " RESET "%s x%d = Rp%d\n", namaMenu, qty, item->subtotal);
     }
 
     jumlahOrder++;
-    printf("\nPesanan berhasil ditambahkan!\n");
+
+    printf("\n");
+    printf(BOLD "╔══════════════════════════════╗\n" RESET);
+    printf(BOLD "║   PESANAN BERHASIL DISIMPAN  ║\n" RESET);
+    printf(BOLD "╚══════════════════════════════╝\n" RESET);
+    printf(BOLD "Total Bayar : Rp%d\n" RESET, pesanan->total);
+
     pauseScreen();
 }
+
 
 void tampilDetailOrder(int idOrder) {
     clearScreen();
@@ -148,25 +167,35 @@ void tampilOrder() {
     clearScreen();
 
     if (jumlahOrder == 0) {
-        printf("Belum ada pesanan\n");
+        printf(BOLD "Belum ada pesanan!\n" RESET);
         pauseScreen();
         return;
     }
 
-    printf("ID | Nama Pembeli | Total\n");
-    printf("---------------------------\n");
+    printf("\n");
+    printf(BOLD "╔════════════════════════════════════════════╗\n" RESET);
+    printf(BOLD "║               DAFTAR PESANAN               ║\n" RESET);
+    printf(BOLD "╚════════════════════════════════════════════╝\n" RESET);
+
+    printf(BOLD "┌────┬────────────────┬────────────┐\n" RESET);
+    printf(BOLD "│ ID │ Nama Pembeli   │ Total      │\n" RESET);
+    printf(BOLD "├────┼────────────────┼────────────┤\n" RESET);
 
     for (int i = 0; i < jumlahOrder; i++) {
-        printf("%2d | %-12s | Rp.%d\n", daftarOrder[i].idOrder, daftarOrder[i].namaOrder, daftarOrder[i].total);
+        printf("│ %-2d │ %-14s │ Rp%-9d │\n", daftarOrder[i].idOrder, daftarOrder[i].namaOrder, daftarOrder[i].total);
     }
 
+    printf(BOLD "└────┴────────────────┴────────────┘\n" RESET);
+
     int id;
-    printf("\nMasukan ID pesanan (0 batal): ");
+    printf(BOLD "\nMasukkan ID pesanan (0 = batal) ➜ " RESET);
     scanf("%d", &id);
 
-    if (id > 0 && id <= jumlahOrder)
-    tampilDetailOrder(id);
+    if (id > 0 && id <= jumlahOrder) {
+        tampilDetailOrder(id);
+    }
 }
+
 
 void hapusOrder(int index) {
     if (index < 0 || index >= jumlahOrder) return;

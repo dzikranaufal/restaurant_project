@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include "ansi.h"
 #include "menu.h"
 #include "utils.h"
 
@@ -51,38 +52,54 @@ void tampilMenuPerKategori() {
     clearScreen();
 
     const char *kategori[] = {"Makanan", "Minuman", "Dessert"};
-
-    printf("=========== DAFTAR MENU ===========\n");
+    
+    printf("\n");
+    printf(BOLD "╔════════════════════════════════════════════╗\n" RESET);
+    printf(BOLD "║               DAFTAR MENU                  ║\n" RESET);
+    printf(BOLD "╚════════════════════════════════════════════╝\n" RESET);
 
     for (int k = 0; k < 3; k++) {
-        printf("\n--- %s ---\n", kategori[k]);
+        printf("\n");
+        printf(BOLD "┌────────────────────────────────────────────┐\n" RESET);
+        printf(BOLD "│ %-42s │\n" RESET, kategori[k]);
+        printf(BOLD "├────┬────────────────────────────────┬──────┤\n" RESET);
+        printf(BOLD "│ ID │ Nama Menu                      │ Harga│\n" RESET);
+        printf(BOLD "├────┼────────────────────────────────┼──────┤\n" RESET);
+
         int ada = 0;
 
         for (int i = 0; i < jumlah; i++) {
             if (strcmp(daftarMenu[i].kategori, kategori[k]) == 0) {
-                printf("[%d] %-30s Rp%d\n", daftarMenu[i].kode, daftarMenu[i].nama, daftarMenu[i].harga);
+                printf("│ %-2d │ %-30s │ %5d│\n", daftarMenu[i].kode, daftarMenu[i].nama, daftarMenu[i].harga);
                 ada = 1;
             }
         }
 
-        if (!ada)
-            printf("(Tidak ada menu)\n");
-    }
+        if (!ada) {
+            printf("│ %-44s │\n", "Tidak ada menu");
+        }
 
-    printf("===================================\n");
+        printf(BOLD "└────┴────────────────────────────────┴──────┘\n" RESET);
+    }
+    pauseScreen();
 }
 
 void menuController() {
     int pilih;
     clearScreen();
 
-    printf("=== SORT MENU ===\n");
-    printf("1. Harga Termurah\n");
-    printf("2. Harga Termahal\n");
-    printf("3. Nama A-Z\n");
-    printf("4. Nama Z-A\n");
-    printf("0. Tanpa Sorting\n");
-    printf("Pilih: ");
+    printf("\n");
+    printf(BOLD "╔══════════════════════════════╗\n" RESET);
+    printf(BOLD "║          SORT MENU           ║\n" RESET);
+    printf(BOLD "╠══════════════════════════════╣\n" RESET);
+    printf(BOLD "║ 1. " RESET "Harga Termurah       ║\n");
+    printf(BOLD "║ 2. " RESET "Harga Termahal       ║\n");
+    printf(BOLD "║ 3. " RESET "Nama A - Z           ║\n");
+    printf(BOLD "║ 4. " RESET "Nama Z - A           ║\n");
+    printf(BOLD "╠══════════════════════════════╣\n" RESET);
+    printf(BOLD "║ 0. " RESET "Tanpa Sorting        ║\n");
+    printf(BOLD "╚══════════════════════════════╝\n" RESET);
+    printf(BOLD "Pilih menu ➜ " RESET);
     scanf("%d", &pilih);
 
     switch (pilih) {
@@ -101,30 +118,44 @@ void tambahData() {
     clearScreen();
 
     if (jumlah >= MAX_MENU) {
-        printf("Menu penuh!\n");
+        printf(BOLD "Menu penuh! Tidak bisa menambah data.\n" RESET);
         pauseScreen();
         return;
     }
 
     daftarMenu[jumlah].kode = jumlah + 1;
-    printf("Kode otomatis: %d\n", daftarMenu[jumlah].kode);
 
-    printf("Nama menu  : ");
+    printf("\n");
+    printf(BOLD "╔════════════════════════════════╗\n" RESET);
+    printf(BOLD "║           TAMBAH MENU          ║\n" RESET);
+    printf(BOLD "╚════════════════════════════════╝\n" RESET);
+
+    printf(BOLD "Kode     : " RESET "%d\n", daftarMenu[jumlah].kode);
+
+    printf(BOLD "Nama     : " RESET);
     scanf(" %[^\n]", daftarMenu[jumlah].nama);
 
-    printf("Harga      : ");
+    printf(BOLD "Harga    : " RESET);
     scanf("%d", &daftarMenu[jumlah].harga);
 
     int k;
-    printf("Kategori:\n1. Makanan\n2. Minuman\n3. Dessert\n> ");
+    printf(BOLD "Kategori :\n" RESET);
+    printf("  1. Makanan\n");
+    printf("  2. Minuman\n");
+    printf("  3. Dessert\n");
+    printf(BOLD "  Pilih ➜ " RESET);
     scanf("%d", &k);
 
-    if (k == 1) strcpy(daftarMenu[jumlah].kategori, "Makanan");
-    else if (k == 2) strcpy(daftarMenu[jumlah].kategori, "Minuman");
-    else strcpy(daftarMenu[jumlah].kategori, "Dessert");
+    if (k == 1)
+        strcpy(daftarMenu[jumlah].kategori, "Makanan");
+    else if (k == 2)
+        strcpy(daftarMenu[jumlah].kategori, "Minuman");
+    else
+        strcpy(daftarMenu[jumlah].kategori, "Dessert");
 
     jumlah++;
-    printf("Menu berhasil ditambahkan!\n");
+
+    printf("\n" BOLD "Menu berhasil ditambahkan!\n" RESET);
     pauseScreen();
 }
 
@@ -132,34 +163,63 @@ void hapusData() {
     clearScreen();
     
     int kode;
-    printf("\n=== Hapus Menu ===\n");
-    printf("Masukkan kode menu yang ingin dihapus: ");
+
+    printf("\n");
+    printf(BOLD "╔══════════════════════════════╗\n" RESET);
+    printf(BOLD "║           HAPUS MENU         ║\n" RESET);
+    printf(BOLD "╚══════════════════════════════╝\n" RESET);
+    printf(BOLD "Masukkan kode menu ➜ " RESET);
     scanf("%d", &kode);
 
     int index = -1;
-    for(int i = 0; i < jumlah; i++){
-        if (daftarMenu[i].kode == kode){
+    for (int i = 0; i < jumlah; i++) {
+        if (daftarMenu[i].kode == kode) {
             index = i;
             break;
         }
     }
+
     if (index == -1) {
-        printf("Data tidak ditemukan!\n");
-    } else {
-        for (int i = index; i < jumlah-1; i++){
-            daftarMenu[i] = daftarMenu[i+1];
+        printf("\n" BOLD "Data tidak ditemukan!\n" RESET);
+        pauseScreen();
+        return;
+    }
+
+    printf("\nData yang dihapus:\n");
+    printf("Kode  : %d\n", daftarMenu[index].kode);
+    printf("Nama  : %s\n", daftarMenu[index].nama);
+    printf("Harga : Rp%d\n", daftarMenu[index].harga);
+    printf("Kategori: %s\n", daftarMenu[index].kategori);
+
+    char konfirmasi;
+    printf(BOLD "\nYakin ingin menghapus? (y/n) ➜ " RESET);
+    scanf(" %c", &konfirmasi);
+
+    if (konfirmasi == 'y' || konfirmasi == 'Y') {
+        for (int i = index; i < jumlah - 1; i++) {
+            daftarMenu[i] = daftarMenu[i + 1];
         }
         jumlah--;
-        printf("Data berhasil dihapus!\n");
+        printf("\n" BOLD "Data berhasil dihapus!\n" RESET);
+    } else {
+        printf("\n" BOLD "Penghapusan dibatalkan.\n" RESET);
     }
+
     pauseScreen();
 }
+
 
 void editData() {
     clearScreen();
 
     int kode, index = -1;
-    printf("Kode menu: ");
+
+    printf("\n");
+    printf(BOLD "╔══════════════════════════════╗\n" RESET);
+    printf(BOLD "║            EDIT MENU         ║\n" RESET);
+    printf(BOLD "╚══════════════════════════════╝\n" RESET);
+
+    printf(BOLD "Masukkan kode menu ➜ " RESET);
     scanf("%d", &kode);
 
     for (int i = 0; i < jumlah; i++) {
@@ -170,26 +230,41 @@ void editData() {
     }
 
     if (index == -1) {
-        printf("Menu tidak ditemukan!\n");
+        printf("\n" BOLD "Menu tidak ditemukan!\n" RESET);
         pauseScreen();
         return;
     }
 
-    printf("Nama baru  : ");
+    printf("\nData saat ini:\n");
+    printf("Kode     : %d\n", daftarMenu[index].kode);
+    printf("Nama     : %s\n", daftarMenu[index].nama);
+    printf("Harga    : Rp%d\n", daftarMenu[index].harga);
+    printf("Kategori : %s\n", daftarMenu[index].kategori);
+
+    printf("\n" BOLD "Masukkan data baru\n" RESET);
+
+    printf(BOLD "Nama     : " RESET);
     scanf(" %[^\n]", daftarMenu[index].nama);
 
-    printf("Harga baru : ");
+    printf(BOLD "Harga    : " RESET);
     scanf("%d", &daftarMenu[index].harga);
 
     int k;
-    printf("Kategori:\n1. Makanan\n2. Minuman\n3. Dessert\n> ");
+    printf(BOLD "Kategori :\n" RESET);
+    printf("  1. Makanan\n");
+    printf("  2. Minuman\n");
+    printf("  3. Dessert\n");
+    printf(BOLD "  Pilih ➜ " RESET);
     scanf("%d", &k);
 
-    if (k == 1) strcpy(daftarMenu[index].kategori, "Makanan");
-    else if (k == 2) strcpy(daftarMenu[index].kategori, "Minuman");
-    else strcpy(daftarMenu[index].kategori, "Dessert");
+    if (k == 1)
+        strcpy(daftarMenu[index].kategori, "Makanan");
+    else if (k == 2)
+        strcpy(daftarMenu[index].kategori, "Minuman");
+    else
+        strcpy(daftarMenu[index].kategori, "Dessert");
 
-    printf("Menu diperbarui!\n");
+    printf("\n" BOLD "Menu berhasil diperbarui!\n" RESET);
     pauseScreen();
 }
 
@@ -198,18 +273,36 @@ void searchMenu() {
     clearScreen();
 
     char cari[50];
-    printf("\n=== Searching Menu Berdasarkan Nama ===\n");
-    printf("Masukkan nama menu: ");
+    int ditemukan = 0;
+
+    printf("\n");
+    printf(BOLD "╔════════════════════════════════════════════╗\n" RESET);
+    printf(BOLD "║        SEARCH MENU (BERDASARKAN NAMA)      ║\n" RESET);
+    printf(BOLD "╚════════════════════════════════════════════╝\n" RESET);
+
+    printf(BOLD "Masukkan nama menu ➜ " RESET);
     scanf(" %[^\n]", cari);
 
-    int index = 0;
-    for(int i = 0; i < jumlah; i++){
-        if (strstr(daftarMenu[i].nama, cari)){
-            printf("[%d] %s - Rp%d (%s)\n", daftarMenu[i].kode, daftarMenu[i].nama, daftarMenu[i].harga, daftarMenu[i].kategori);
-            index = 1;
+    printf("\n");
+    printf(BOLD "Hasil pencarian:\n" RESET);
+
+    printf(BOLD "┌────┬────────────────────────────────┬────────┬──────────┐\n" RESET);
+    printf(BOLD "│ ID │ Nama Menu                      │ Harga  │ Kategori │\n" RESET);
+    printf(BOLD "├────┼────────────────────────────────┼────────┼──────────┤\n" RESET);
+
+    for (int i = 0; i < jumlah; i++) {
+        if (strstr(daftarMenu[i].nama, cari)) {
+            printf("│ %-2d │ %-30s │ %6d │ %-8s │\n", daftarMenu[i].kode, daftarMenu[i].nama, daftarMenu[i].harga, daftarMenu[i].kategori);
+            ditemukan = 1;
         }
     }
-    
-    if (!index) printf("Menu tidak ditemukan!\n");
+
+    if (!ditemukan) {
+        printf("│ %-44s │\n", "Menu tidak ditemukan");
+    }
+
+    printf(BOLD "└────┴────────────────────────────────┴────────┴──────────┘\n" RESET);
+
     pauseScreen();
 }
+

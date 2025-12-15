@@ -22,7 +22,7 @@ extern Menu daftarMenu[50];
 extern int jumlah;
 
 void sortMenu(SortType type);
-void tampilMenuPerKategori();
+void tampilMenu();
 
 void menuController();
 void tambahData();

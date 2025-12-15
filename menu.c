@@ -48,7 +48,7 @@ void sortMenu(SortType type) {
     }
 }
 
-void tampilMenuPerKategori() {
+void tampilMenu() {
     clearScreen();
 
     const char *kategori[] = {"Makanan", "Minuman", "Dessert"};
@@ -92,12 +92,12 @@ void menuController() {
     printf(BOLD "╔══════════════════════════════╗\n" RESET);
     printf(BOLD "║          SORT MENU           ║\n" RESET);
     printf(BOLD "╠══════════════════════════════╣\n" RESET);
-    printf(BOLD "║ 1. " RESET "Harga Termurah       ║\n");
-    printf(BOLD "║ 2. " RESET "Harga Termahal       ║\n");
-    printf(BOLD "║ 3. " RESET "Nama A - Z           ║\n");
-    printf(BOLD "║ 4. " RESET "Nama Z - A           ║\n");
+    printf(BOLD "║ 1. " RESET "Harga Termurah            ║\n");
+    printf(BOLD "║ 2. " RESET "Harga Termahal            ║\n");
+    printf(BOLD "║ 3. " RESET "Nama A - Z                ║\n");
+    printf(BOLD "║ 4. " RESET "Nama Z - A                ║\n");
     printf(BOLD "╠══════════════════════════════╣\n" RESET);
-    printf(BOLD "║ 0. " RESET "Tanpa Sorting        ║\n");
+    printf(BOLD "║ 0. " RESET "Tanpa Sorting             ║\n");
     printf(BOLD "╚══════════════════════════════╝\n" RESET);
     printf(BOLD "Pilih menu ➜ " RESET);
     scanf("%d", &pilih);
@@ -110,7 +110,7 @@ void menuController() {
         default: sortMenu(SORT_NONE); break;
     }
 
-    tampilMenuPerKategori();
+    tampilMenu();
     pauseScreen();
 }
 

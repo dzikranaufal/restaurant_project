@@ -67,8 +67,7 @@ void tambahOrder() {
     printf(BOLD "Nama Pembeli ➜ " RESET);
     scanf(" %[^\n]", pesanan->namaOrder);
 
-    /* Tampilkan menu */
-    tampilMenuPerKategori();
+    tampilMenu();
 
     int jenisMenu;
     printf(BOLD "\nBerapa jenis menu yang dipesan? (maks %d) ➜ " RESET, MAX_ORDER_ITEMS);
